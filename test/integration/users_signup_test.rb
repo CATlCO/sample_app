@@ -8,8 +8,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			post users_path, user: {name: "", email: "user@invalid", password: "foo", password_confirmation: "bar"}
 		end 
 		assert_template 'users/new'
-    assert_select 'div#<CSS id for error explanation>'
-    assert_select 'div.<CSS class for field with error>'
+    assert_select 'div#error_explanation'
+  	assert_select 'div.field_with_errors'
     assert flash.empty?
 	end
 
@@ -18,6 +18,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 		assert_difference 'User.count', 1 do
 			post_via_redirect users_path, user: {name: "ex", email: "user@ex.com", password: "foobar", password_confirmation: "foobar"}
 		end
+		assert is_logged_in?
 		assert_template 'users/show'
 		assert flash[:success]
 	end
