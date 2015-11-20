@@ -18,9 +18,10 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 		name = "ex"
 		email = "user@ex.com"
 		get edit_user_path(@user)
-		assert_redirected_to login_path #*** might be removed
+		assert_redirected_to login_path #*** not originally there 
 		log_in_as @user
 		assert_redirected_to edit_user_path(@user)
+		assert_nil session[:forwarding_url]
 		patch user_path(@user), user: {name: name, email: email, password: "", password_confirmation: ""}
 		assert flash[:success]
 	  assert_redirected_to @user
